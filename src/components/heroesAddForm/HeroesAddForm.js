@@ -41,7 +41,7 @@ const HeroesAddForm = () => {
     const { control, handleSubmit, register } = methods;
 
     const onSubmit = (data) => {
-        request("http://localhost:4000/api/zamer/addHero", 'POST', JSON.stringify({
+        request("/api/zamer/addHero", 'POST', JSON.stringify({
             name: data.name,
             description: data.text,
             element: data.element

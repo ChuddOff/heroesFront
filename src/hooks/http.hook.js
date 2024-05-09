@@ -4,10 +4,10 @@ export const useHttp = () => {
     const [process, setProcess] = useState('waiting');
 
     const request = useCallback(async (url, method = 'GET', body = null, headers = {'Content-Type': 'application/json'}) => {
-        
+        const urlDomen = process.env.URL || "http://localhost:4000"
         setProcess('loading');
         try {
-            const response = await fetch(url, {method, body, headers});
+            const response = await fetch(urlDomen+url, {method, body, headers});
 
             if (!response.ok) {
                 throw new Error(`Could not fetch ${url}, status: ${response.status}`);

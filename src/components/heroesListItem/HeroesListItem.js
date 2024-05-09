@@ -2,11 +2,11 @@ import {useHttp} from '../../hooks/http.hook';
 
 const HeroesListItem = ({name, description, element, _id}) => {
 
-    let elementClassName;
+    let elementClassName
     const {request} = useHttp();
 
     const delHero = (id) => {
-        request(`http://localhost:4000/api/zamer/deleteHero/?id=${id}`, 'DELETE')
+        request(`/api/zamer/deleteHero/?id=${id}`, 'DELETE')
     }
 
     switch (element) {

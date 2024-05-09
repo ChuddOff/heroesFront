@@ -19,7 +19,7 @@ const HeroesList = () => {
     useEffect(() => {
         dispatch(heroesFetching());
         const int = setInterval(() => {
-            request("http://localhost:4000/api/zamer/heroes")
+            request("/api/zamer/heroes")
                 .then(data => dispatch(heroesFetched(data)))
                 .catch(() => dispatch(heroesFetchingError()))
         }, 5000);
