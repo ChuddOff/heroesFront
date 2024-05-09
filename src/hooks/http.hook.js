@@ -1,23 +1,24 @@
 import { useCallback, useState } from "react";
 
 export const useHttp = () => {
-    const [process, setProcess] = useState('waiting');
+    // const [proc, setProc] = useState('waiting');
 
     const request = useCallback(async (url, method = 'GET', body = null, headers = {'Content-Type': 'application/json'}) => {
-        const urlDomen = process.env.URL || "http://localhost:4000"
-        setProcess('loading');
+        const urlDomen = process.env.BACKURL || "http://localhost:4000"
+        console.log(urlDomen+url);
+        // setProc('loading');
         try {
-            const response = await fetch(urlDomen+url, {method, body, headers});
+            const response = await fetch(urlDomen+url, {method, body, headers}); 
 
             if (!response.ok) {
                 throw new Error(`Could not fetch ${url}, status: ${response.status}`);
             }
-
+ 
             const data = await response.json();
             return data;
         } catch(e) {
             console.log(e);
-            setProcess('error');
+            // setProc('error');
             throw e;
         }
     }, []);
