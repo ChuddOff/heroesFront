@@ -1,5 +1,6 @@
 'use strict';
 
+// const { EntryOptionPlugin } = require('webpack');
 const fs = require('fs');
 const path = require('path');
 const webpack = require('webpack');
@@ -133,6 +134,9 @@ module.exports = function (webpackEnv) {
             config: false,
             plugins: !useTailwind
               ? [
+                  // new EntryOptionPlugin({
+                  //   BACKURL: "http://localhost:4000"
+                  // }),
                   'postcss-flexbugs-fixes',
                   [
                     'postcss-preset-env',

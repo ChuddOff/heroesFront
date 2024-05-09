@@ -1,5 +1,4 @@
 import { Controller, FormProvider, useForm } from 'react-hook-form';
-import * as Yup from 'yup'
 import {useHttp} from '../../hooks/http.hook';;
 
 
