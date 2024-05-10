@@ -1,5 +1,7 @@
 import { Controller, FormProvider, useForm } from 'react-hook-form';
-import {useHttp} from '../../hooks/http.hook';;
+import { CountdownCircleTimer } from 'react-countdown-circle-timer'
+import { useState } from 'react';
+import {useHttp} from '../../hooks/http.hook';
 
 
 // Задача для этого компонента:
@@ -13,7 +15,7 @@ import {useHttp} from '../../hooks/http.hook';;
 // данных из фильтров
 
 const HeroesAddForm = () => {
-
+    const [cooldown, setCooldown] = useState(false);
 
     const methods = useForm ({
         // mode: "onBlur",
@@ -50,7 +52,10 @@ const HeroesAddForm = () => {
 
     return (
         <form className="border p-4 shadow-lg rounded"
-        onSubmit={handleSubmit(onSubmit)} >
+        onSubmit={() => {
+            setCooldown(true);
+            handleSubmit(onSubmit);
+        }} >
             <div className="mb-3">
                 <label htmlFor="name" className="form-label fs-4">Имя нового героя</label>
                 <input 
@@ -103,8 +108,24 @@ const HeroesAddForm = () => {
                 </select>
             </div>
             {/* {formik.errors.element && formik.touched.element && <div>{formik.errors.element}</div>} */}
-            <input type="submit" className="btn btn-primary" value="Создать" />
+            {cooldown ? <Cooldown/> : <input type="submit" className="btn btn-primary" value="Создать" />}
+           
         </form>
+    )
+}
+
+const Cooldown = () => {
+    return (
+        <>
+            <CountdownCircleTimer 
+            isPlaying
+            duration={10}
+            colors={["#212529", "#F7B801", "#A30000", "#A30000"]}
+            colorsTime={[10, 6, 3, 0]}
+            onComplete={() => ({ shouldRepeat: false, delay: 1 })} >
+                {({ remainingTime }) => remainingTime}
+            </CountdownCircleTimer>
+        </>
     )
 }
 
