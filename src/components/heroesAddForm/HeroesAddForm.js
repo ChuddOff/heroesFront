@@ -52,10 +52,10 @@ const HeroesAddForm = () => {
 
     return (
         <form className="border p-4 shadow-lg rounded"
-        onSubmit={() => {
+        onSubmit={handleSubmit((data) => {
             setCooldown(true);
-            handleSubmit(onSubmit);
-        }} >
+            onSubmit(data);
+        })} >
             <div className="mb-3">
                 <label htmlFor="name" className="form-label fs-4">Имя нового героя</label>
                 <input 
@@ -108,8 +108,9 @@ const HeroesAddForm = () => {
                 </select>
             </div>
             {/* {formik.errors.element && formik.touched.element && <div>{formik.errors.element}</div>} */}
-            {cooldown ? <Cooldown/> : <input type="submit" className="btn btn-primary" value="Создать" />}
-           
+            <input type="submit" className="btn btn-primary" value="Создать" />
+            <Cooldown/>
+        
         </form>
     )
 }
