@@ -1,6 +1,7 @@
 import {useHttp} from '../../hooks/http.hook';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { io } from 'https://cdn.socket.io/4.7.5/socket.io.min.js'
 
 import { heroesFetching, heroesFetched, heroesFetchingError } from '../../actions';
 import HeroesListItem from "../heroesListItem/HeroesListItem";
@@ -16,13 +17,18 @@ const HeroesList = () => {
     const dispatch = useDispatch();
     const {request} = useHttp();
 
+    console.log(io);
+
     useEffect(() => {
         dispatch(heroesFetching());
+        request("/api/zamer/heroes")
+                .then(data => dispatch(heroesFetched(data)))
+                .catch(() => dispatch(heroesFetchingError()))
         const int = setInterval(() => {
             request("/api/zamer/heroes")
                 .then(data => dispatch(heroesFetched(data)))
                 .catch(() => dispatch(heroesFetchingError()))
-        }, 5000);
+        }, 3000);
         // eslint-disable-next-line
     }, []);
 
