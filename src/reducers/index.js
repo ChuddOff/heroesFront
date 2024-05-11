@@ -1,7 +1,8 @@
 const initialState = {
     heroes: [],
     heroesLoadingStatus: 'idle',
-    filters: []
+    filters: [],
+    coolDown: false
 }
 
 const reducer = (state = initialState, action) => {
@@ -21,6 +22,16 @@ const reducer = (state = initialState, action) => {
             return {
                 ...state,
                 heroesLoadingStatus: 'error'
+            }
+        case 'COOLDOWN_ON':
+            return {
+                ...state,
+                coolDown: true
+            }
+        case 'COOLDOWN_OFF':
+            return {
+                ...state,
+                coolDown: false
             }
         default: return state
     }

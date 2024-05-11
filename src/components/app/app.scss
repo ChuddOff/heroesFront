@@ -5,12 +5,14 @@
 }
 
 .content {
-    display: grid;
-    grid-template-columns: 560px 440px;
+    display: flex;
+    flex-direction: column-reverse;
+    flex-wrap: wrap;
+    align-items: center;
     max-width: 1040px;
     margin: 0 auto;
     padding-top: 50px;
     &__interactive {
-        padding-left: 40px;
+        padding-bottom: 20px;
     }
 }

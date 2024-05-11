@@ -1,7 +1,12 @@
 import { Controller, FormProvider, useForm } from 'react-hook-form';
 import { CountdownCircleTimer } from 'react-countdown-circle-timer'
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+
+import { useDispatch, useSelector } from 'react-redux';
+import { coolDownOff, coolDownOn } from '../../actions';
+
 import {useHttp} from '../../hooks/http.hook';
+import './HeroesAddForm.css'
 
 
 // Задача для этого компонента:
@@ -15,7 +20,15 @@ import {useHttp} from '../../hooks/http.hook';
 // данных из фильтров
 
 const HeroesAddForm = () => {
-    const [cooldown, setCooldown] = useState(false);
+
+    const dispatch = useDispatch();
+    const {coolDown} = useSelector(state => state)
+
+    useEffect(() => {
+        if (localStorage.getItem('cooldown') === 'true') {
+            dispatch(coolDownOn());
+        }
+    }, [])
 
     const methods = useForm ({
         // mode: "onBlur",
@@ -48,14 +61,13 @@ const HeroesAddForm = () => {
             element: data.element
         }))
         reset();
+        dispatch(coolDownOn())
+        localStorage.setItem('cooldown', true)
     }
 
     return (
-        <form className="border p-4 shadow-lg rounded"
-        onSubmit={handleSubmit((data) => {
-            setCooldown(true);
-            onSubmit(data);
-        })} >
+        <form className="border p-4 shadow-lg rounded form"
+        onSubmit={handleSubmit(onSubmit)} >
             <div className="mb-3">
                 <label htmlFor="name" className="form-label fs-4">Имя нового героя</label>
                 <input 
@@ -107,27 +119,40 @@ const HeroesAddForm = () => {
                     <option value="earth">Земля</option>
                 </select>
             </div>
-            {/* {formik.errors.element && formik.touched.element && <div>{formik.errors.element}</div>} */}
-            <input type="submit" className="btn btn-primary" value="Создать" />
-            <Cooldown/>
+            
+            {coolDown ? <Cooldown dispatch={dispatch}/> : <input type="submit" className="btn btn-primary submit" value="Создать" />}
+            
         
         </form>
     )
 }
 
-const Cooldown = () => {
+const Cooldown = ({dispatch}) => {
     return (
-        <>
+        <div className="cooldown" >
             <CountdownCircleTimer 
-            isPlaying
-            duration={10}
-            colors={["#212529", "#F7B801", "#A30000", "#A30000"]}
-            colorsTime={[10, 6, 3, 0]}
-            onComplete={() => ({ shouldRepeat: false, delay: 1 })} >
-                {({ remainingTime }) => remainingTime}
-            </CountdownCircleTimer>
-        </>
+        isPlaying
+        duration={10}
+        colors={["#0b5ed7", "#0c30ef", "#0a26bf", "#071c8e"]}
+        colorsTime={[10, 6, 3, 0]}
+        size={40}
+        strokeWidth={5}
+        onComplete={() => ({ shouldRepeat: false, delay: 1 })} >
+            {({ remainingTime }) => {
+                if (remainingTime===0) {
+                    dispatch(coolDownOff());
+                    localStorage.setItem('cooldown', false);
+                }
+                return(
+                    <div className={"time"}>
+                        {remainingTime}
+                    </div>
+                )
+            }}
+        </CountdownCircleTimer>
+        </div>
     )
+
 }
 
 export default HeroesAddForm;

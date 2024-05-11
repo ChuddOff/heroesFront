@@ -5,12 +5,11 @@
 }
 
 .content {
-  display: grid;
-  grid-template-columns: 560px 440px;
+  display: flex;
   max-width: 1040px;
   margin: 0 auto;
   padding-top: 50px;
 }
 .content__interactive {
-  padding-left: 40px;
+  padding-bottom: 20px;
 }/*# sourceMappingURL=app.css.map */

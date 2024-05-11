@@ -1,17 +1,22 @@
 import {useHttp} from '../../hooks/http.hook';
+import { useRef } from 'react';
+import './HeroesListItem.css'
 
 const HeroesListItem = ({name, description, element, _id}) => {
+
+    const myRef = useRef(null);
 
     let elementClassName
     const {request} = useHttp();
 
     const delHero = (id) => {
+        myRef.current.classList.add('delete')
         request(`/api/zamer/deleteHero/?id=${id}`, 'DELETE')
     }
 
     switch (element) {
         case 'fire':
-            elementClassName = 'bg-danger bg-gradient';
+            elementClassName = 'bg-danger bg-gradient'; 
             break;
         case 'water':
             elementClassName = 'bg-primary bg-gradient';
@@ -28,9 +33,10 @@ const HeroesListItem = ({name, description, element, _id}) => {
 
     return (
         <li 
-            className={`card flex-row mb-4 shadow-lg text-white ${elementClassName}`}>
-            <img src="http://www.stpaulsteinbach.org/wp-content/uploads/2014/09/unknown-hero.jpg" 
-                 className="img-fluid w-25 d-inline" 
+            className={`heroAnim card flex-row mb-4 shadow-lg text-white ${elementClassName}`}
+            ref={myRef} >
+            <img src="favicon.ico" 
+                 className=" d-inline icon" 
                  alt="unknown hero" 
                  style={{'objectFit': 'cover'}}/>
             <div className="card-body">

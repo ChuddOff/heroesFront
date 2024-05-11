@@ -1,3 +1,5 @@
+import './HeroesList.css'
+
 import {useHttp} from '../../hooks/http.hook';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -22,11 +24,11 @@ const HeroesList = () => {
     useEffect(() => {
         dispatch(heroesFetching());
         request("/api/zamer/heroes")
-                .then(data => dispatch(heroesFetched(data)))
+                .then(data => dispatch(heroesFetched(data.reverse().slice(0, 11))))
                 .catch(() => dispatch(heroesFetchingError()))
         const int = setInterval(() => {
             request("/api/zamer/heroes")
-                .then(data => dispatch(heroesFetched(data)))
+                .then(data => dispatch(heroesFetched(data.reverse().slice(0, 11))))
                 .catch(() => dispatch(heroesFetchingError()))
         }, 3000);
         // eslint-disable-next-line
@@ -50,7 +52,7 @@ const HeroesList = () => {
     }
     const elements = renderHeroesList(heroes);
     return (
-        <ul>
+        <ul className='heroes'>
             {elements}
         </ul>
     )

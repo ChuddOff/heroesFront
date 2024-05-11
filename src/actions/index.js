@@ -16,3 +16,15 @@ export const heroesFetchingError = () => {
         type: 'HEROES_FETCHING_ERROR'
     }
 }
+
+export const coolDownOn = () => {
+    return {
+        type: 'COOLDOWN_ON'
+    }
+}
+
+export const coolDownOff = () => {
+    return {
+        type: 'COOLDOWN_OFF'
+    }
+}

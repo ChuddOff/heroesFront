@@ -1,0 +1,31 @@
+.cooldown {
+    display: flex;
+
+    
+}
+.form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.submit {
+    width: 90px;
+}
+.form div{
+    width: 100%;
+    justify-content: center;
+}
+.time {
+    text-align: center;
+    animation: fadeIn 1s ease-in-out infinite;
+}
+  @keyframes fadeIn {
+    from {
+        transform: translateY(-90%);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+  }
