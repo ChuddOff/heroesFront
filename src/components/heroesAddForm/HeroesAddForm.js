@@ -58,8 +58,11 @@ const HeroesAddForm = () => {
         request("/api/zamer/addHero", 'POST', JSON.stringify({
             name: data.name,
             description: data.text,
-            element: data.element
+            element: data.element,
+            uri: `https://api.dicebear.com/8.x/adventurer/svg?flip=true&seed=${data.name}`
         }))
+
+
         reset();
         dispatch(coolDownOn())
         localStorage.setItem('cooldown', true)

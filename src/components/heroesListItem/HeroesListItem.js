@@ -2,7 +2,7 @@ import {useHttp} from '../../hooks/http.hook';
 import { useRef } from 'react';
 import './HeroesListItem.css'
 
-const HeroesListItem = ({name, description, element, _id}) => {
+const HeroesListItem = ({name, description, element, uri, _id}) => {
 
     const myRef = useRef(null);
 
@@ -35,7 +35,7 @@ const HeroesListItem = ({name, description, element, _id}) => {
         <li 
             className={`heroAnim card flex-row mb-4 shadow-lg text-white ${elementClassName}`}
             ref={myRef} >
-            <img src="favicon.ico" 
+            <img src={uri} 
                  className=" d-inline icon" 
                  alt="unknown hero" 
                  style={{'objectFit': 'cover'}}/>

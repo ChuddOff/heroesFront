@@ -3,11 +3,11 @@ import './HeroesList.css'
 import {useHttp} from '../../hooks/http.hook';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { io } from 'https://cdn.socket.io/4.7.5/socket.io.min.js'
 
 import { heroesFetching, heroesFetched, heroesFetchingError } from '../../actions';
 import HeroesListItem from "../heroesListItem/HeroesListItem";
 import Spinner from '../spinner/Spinner';
+import { socket } from '../../socket';
 
 // Задача для этого компонента:
 // При клике на "крестик" идет удаление персонажа из общего состояния
@@ -18,8 +18,6 @@ const HeroesList = () => {
     const {heroes, heroesLoadingStatus} = useSelector(state => state);
     const dispatch = useDispatch();
     const {request} = useHttp();
-
-    console.log(io);
 
     useEffect(() => {
         dispatch(heroesFetching());
@@ -32,6 +30,8 @@ const HeroesList = () => {
                 .catch(() => dispatch(heroesFetchingError()))
         }, 3000);
         // eslint-disable-next-line
+
+        // socket.on('message', data => dispatch(heroesFetched(data.reverse().slice(0, 11))));
     }, []);
 
 
