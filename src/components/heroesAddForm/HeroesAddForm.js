@@ -5,6 +5,7 @@ import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { coolDownOff, coolDownOn } from '../../actions';
 
+import { socket } from '../../socket';
 import {useHttp} from '../../hooks/http.hook';
 import './HeroesAddForm.css'
 
@@ -54,14 +55,21 @@ const HeroesAddForm = () => {
 
     const { control, handleSubmit, register, reset } = methods;
 
-    const onSubmit = (data) => {
-        request("/api/zamer/addHero", 'POST', JSON.stringify({
+    const onSubmit = async (data) => {
+        const {_id} = await request("/api/zamer/addHero", 'POST', JSON.stringify({
             name: data.name,
             description: data.text,
             element: data.element,
             uri: `https://api.dicebear.com/8.x/fun-emoji/svg?flip=true&seed=${data.name}`
         }))
 
+        socket.emit("message", {
+            _id: _id,
+            name: data.name,
+            description: data.text,
+            element: data.element,
+            url: `https://api.dicebear.com/8.x/fun-emoji/svg?flip=true&seed=${data.name}`
+        })
 
         reset();
         dispatch(coolDownOn())

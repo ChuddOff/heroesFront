@@ -24,16 +24,19 @@ const HeroesList = () => {
         request("/api/zamer/heroes")
                 .then(data => dispatch(heroesFetched(data.reverse().slice(0, 11))))
                 .catch(() => dispatch(heroesFetchingError()))
-        const int = setInterval(() => {
-            request("/api/zamer/heroes")
-                .then(data => dispatch(heroesFetched(data.reverse().slice(0, 11))))
-                .catch(() => dispatch(heroesFetchingError()))
-        }, 3000);
+        // const int = setInterval(() => {
+        //     request("/api/zamer/heroes")
+        //         .then(data => dispatch(heroesFetched(data.reverse().slice(0, 11))))
+        //         .catch(() => dispatch(heroesFetchingError()))
+        // }, 3000);
         // eslint-disable-next-line
 
-        // socket.on('message', data => dispatch(heroesFetched(data.reverse().slice(0, 11))));
     }, []);
 
+    socket.on('message', data => {
+        dispatch(heroesFetched([data, ...heroes]))
+        console.log(heroes);
+    });
 
     if (heroesLoadingStatus === "loading") {
         return <Spinner/>;
@@ -42,10 +45,10 @@ const HeroesList = () => {
     }
 
     const renderHeroesList = (arr) => {
+        console.log(arr);
         if (arr.length === 0) {
             return <h5 className="text-center mt-5">Героев пока нет</h5>
         }
-
         return arr.map(({_id, ...props}) => {
             return <HeroesListItem key={_id} _id={_id} {...props}/>
         })

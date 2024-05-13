@@ -1,8 +1,29 @@
 import {useHttp} from '../../hooks/http.hook';
-import { useRef } from 'react';
+import { useRef, useState } from 'react';
+import { useSwipeable } from 'react-swipeable';
+
 import './HeroesListItem.css'
 
 const HeroesListItem = ({name, description, element, uri, _id}) => {
+
+    const [positionStart, setPositionStart] = useState(0);
+    const [position, setPosition] = useState(0);
+
+    const handlers = useSwipeable({
+        onSwipeStart: (event) => {
+            setPositionStart(event.deltaX);
+        },
+        onSwiping: (event) => {
+            setPosition(event.deltaX);
+            console.log(event.deltaX);
+
+        },
+        onSwipedEnd: () => {
+            if (Math.abs(position - positionStart) > 60) {
+                delHero(_id);
+            }
+        },
+    });
 
     const myRef = useRef(null);
 
@@ -34,7 +55,12 @@ const HeroesListItem = ({name, description, element, uri, _id}) => {
     return (
         <li 
             className={`heroAnim card flex-row mb-4 shadow-lg text-white ${elementClassName}`}
-            ref={myRef} >
+            ref={myRef}
+            style={{
+                position: 'relative',
+                transform: `translateX(${position}px)`,
+              }}
+            {...handlers} >
             <img src={uri} 
                  className=" d-inline icon" 
                  alt="unknown hero" 

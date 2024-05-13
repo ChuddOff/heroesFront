@@ -6,7 +6,6 @@ export const useHttp = () => {
     const request = useCallback(async (url, method = 'GET', body = null, headers = {'Content-Type': 'application/json'}) => {
         const urlDomen = process.env.BACKURL || "https://heroes-back.vercel.app"
         // const urlDomen = "http://localhost:4000"
-        console.log(urlDomen+url);
         // setProc('loading');
         try {
             const response = await fetch(urlDomen+url, {method, body, headers}); 
