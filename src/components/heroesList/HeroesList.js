@@ -15,7 +15,7 @@ import { socket } from '../../socket';
 // Удаление идет и с json файла при помощи метода DELETE
 
 const HeroesList = () => {
-    const {heroes, heroesLoadingStatus} = useSelector(state => state);
+    const {heroes, heroesLoadingStatus, currentFilter} = useSelector(state => state);
     const dispatch = useDispatch();
     const {request} = useHttp();
 
@@ -35,7 +35,9 @@ const HeroesList = () => {
 
     socket.on('message', data => {
         dispatch(heroesFetched([data, ...heroes]))
-        console.log(heroes);
+    });
+    socket.on('delete', data => {
+        dispatch(heroesFetched(heroes.filter(item => item._id !== data._id)))
     });
 
     if (heroesLoadingStatus === "loading") {
@@ -45,11 +47,15 @@ const HeroesList = () => {
     }
 
     const renderHeroesList = (arr) => {
-        console.log(arr);
         if (arr.length === 0) {
             return <h5 className="text-center mt-5">Героев пока нет</h5>
         }
-        return arr.map(({_id, ...props}) => {
+        if (currentFilter == 'all') {
+            return arr.map(({_id, ...props}) => {
+                return <HeroesListItem key={_id} _id={_id} {...props}/>
+            })
+        }
+        return arr.filter(item => item.element === currentFilter).map(({_id, ...props}) => {
             return <HeroesListItem key={_id} _id={_id} {...props}/>
         })
     }

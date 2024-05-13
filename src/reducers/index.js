@@ -1,7 +1,7 @@
 const initialState = {
     heroes: [],
     heroesLoadingStatus: 'idle',
-    filters: [],
+    currentFilter: "all",
     coolDown: false
 }
 
@@ -32,6 +32,31 @@ const reducer = (state = initialState, action) => {
             return {
                 ...state,
                 coolDown: false
+            }
+        case 'SET_FILTER_ALL':
+            return {
+                ...state,
+                currentFilter: "all"
+            }
+        case 'SET_FILTER_FIRE':
+            return {
+                ...state,
+                currentFilter: "fire"
+            }
+        case 'SET_FILTER_WATER':
+            return {
+                ...state,
+                currentFilter: "water"
+            }
+        case 'SET_FILTER_WIND':
+            return {
+                ...state,
+                currentFilter: "wind"
+            }
+        case 'SET_FILTER_EARTH':
+            return {
+                ...state,
+                currentFilter: "earth"
             }
         default: return state
     }

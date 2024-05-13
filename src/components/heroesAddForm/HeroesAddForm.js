@@ -68,7 +68,7 @@ const HeroesAddForm = () => {
             name: data.name,
             description: data.text,
             element: data.element,
-            url: `https://api.dicebear.com/8.x/fun-emoji/svg?flip=true&seed=${data.name}`
+            uri: `https://api.dicebear.com/8.x/fun-emoji/svg?flip=true&seed=${data.name}`
         })
 
         reset();

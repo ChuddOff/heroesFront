@@ -1,26 +1,26 @@
 import {useHttp} from '../../hooks/http.hook';
 import { useRef, useState } from 'react';
 import { useSwipeable } from 'react-swipeable';
+import { socket } from '../../socket';
 
 import './HeroesListItem.css'
 
 const HeroesListItem = ({name, description, element, uri, _id}) => {
-
-    const [positionStart, setPositionStart] = useState(0);
     const [position, setPosition] = useState(0);
 
     const handlers = useSwipeable({
         onSwipeStart: (event) => {
-            setPositionStart(event.deltaX);
+            setPosition(event.deltaX);
         },
         onSwiping: (event) => {
             setPosition(event.deltaX);
-            console.log(event.deltaX);
 
         },
-        onSwipedEnd: () => {
-            if (Math.abs(position - positionStart) > 60) {
-                delHero(_id);
+        onSwiped: () => {
+            if (Math.abs(position) > 150) {
+                delHero(_id, false);
+            } else {
+                setPosition(0);
             }
         },
     });
@@ -30,9 +30,17 @@ const HeroesListItem = ({name, description, element, uri, _id}) => {
     let elementClassName
     const {request} = useHttp();
 
-    const delHero = (id) => {
-        myRef.current.classList.add('delete')
-        request(`/api/zamer/deleteHero/?id=${id}`, 'DELETE')
+    const delHero = async (id, anim) => {
+        if (anim) {
+            myRef.current.classList.add('delete')
+        } else {
+            myRef.current.style.opacity = '0%'
+        }
+        const {_id} = await request(`/api/zamer/deleteHero/?id=${id}`, 'DELETE');
+        socket.emit("delete", {
+            _id: _id,
+        },)
+
     }
 
     switch (element) {
@@ -54,31 +62,38 @@ const HeroesListItem = ({name, description, element, uri, _id}) => {
 
     return (
         <li 
-            className={`heroAnim card flex-row mb-4 shadow-lg text-white ${elementClassName}`}
-            ref={myRef}
+            className='heroAnim'
             style={{
-                position: 'relative',
-                transform: `translateX(${position}px)`,
+                position: 'relative'
               }}
             {...handlers} >
-            <img src={uri} 
-                 className=" d-inline icon" 
-                 alt="unknown hero" 
-                 style={{'objectFit': 'cover'}}/>
-            <div className="card-body">
-                
-                <h3 className="card-title">{name}</h3>
-                <p className="card-text">{description}</p>
+            <div
+            ref={myRef}
+             style={{
+                transform: `translateX(${position}px)`,
+                opacity: `${100- Math.abs(position/2.5)}%`
+            }}
+            className={`card flex-row mb-4 shadow-lg text-white ${elementClassName}`}
+             >
+                <img src={uri} 
+                    className=" d-inline icon" 
+                    alt="unknown hero" 
+                    style={{'objectFit': 'cover'}}/>
+                <div className="card-body">
+                    
+                    <h3 className="card-title">{name}</h3>
+                    <p className="card-text">{description}</p>
+                </div>
+                <span className="position-absolute top-0 start-100 translate-middle badge border rounded-pill bg-light">
+                    <button 
+                    type="button" 
+                    className="btn-close btn-close" 
+                    aria-label="Close"
+                    onClick={() => {
+                        delHero(_id, true)
+                    }} ></button>
+                </span>
             </div>
-            <span className="position-absolute top-0 start-100 translate-middle badge border rounded-pill bg-light">
-                <button 
-                type="button" 
-                className="btn-close btn-close" 
-                aria-label="Close"
-                onClick={() => {
-                    delHero(_id)
-                }} ></button>
-            </span>
         </li>
     )
 }
