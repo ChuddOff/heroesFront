@@ -11,6 +11,7 @@ const HeroesListItem = ({name, description, element, uri, _id}) => {
     const handlers = useSwipeable({
         onSwipeStart: (event) => {
             setPosition(event.deltaX);
+            document.body.style.overflow = 'hidden'
         },
         onSwiping: (event) => {
             setPosition(event.deltaX);
@@ -22,6 +23,7 @@ const HeroesListItem = ({name, description, element, uri, _id}) => {
             } else {
                 setPosition(0);
             }
+            document.body.style.overflow = 'hidden'
         },
     });
 
@@ -40,6 +42,7 @@ const HeroesListItem = ({name, description, element, uri, _id}) => {
         socket.emit("delete", {
             _id: _id,
         },)
+        socket.emit("connection")
 
     }
 
