@@ -1,4 +1,4 @@
-import { setFilterAll, setFilterFire, setFilterWater, setFilterWind, setFilterEarth } from '../../actions';
+import { setFilterAll, setFilterFire, setFilterWater, setFilterWind, setFilterEarth } from '../../reducers/filtersSlice';
 import { useDispatch } from 'react-redux';
 
 // Задача для этого компонента:

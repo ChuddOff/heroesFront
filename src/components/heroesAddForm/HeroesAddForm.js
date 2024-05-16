@@ -3,7 +3,7 @@ import { CountdownCircleTimer } from 'react-countdown-circle-timer'
 import { useState, useEffect } from 'react';
 
 import { useDispatch, useSelector } from 'react-redux';
-import { coolDownOff, coolDownOn } from '../../actions';
+import { coolDownOff, coolDownOn  } from '../../reducers/heroesSlice';
 
 import { socket } from '../../socket';
 import {useHttp} from '../../hooks/http.hook';

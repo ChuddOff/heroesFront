@@ -4,10 +4,12 @@ import {useHttp} from '../../hooks/http.hook';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { heroesFetching, heroesFetched, heroesFetchingError } from '../../actions';
+import { heroesFetching, heroesFetched, heroesFetchingError } from '../../reducers/heroesSlice';
 import HeroesListItem from "../heroesListItem/HeroesListItem";
 import Spinner from '../spinner/Spinner';
 import { socket } from '../../socket';
+
+import { createSelector } from 'reselect';
 
 // Задача для этого компонента:
 // При клике на "крестик" идет удаление персонажа из общего состояния
@@ -15,10 +17,20 @@ import { socket } from '../../socket';
 // Удаление идет и с json файла при помощи метода DELETE
 
 const HeroesList = () => {
-    const {heroes, heroesLoadingStatus, currentFilter} = useSelector(state => state);
+    const filteredHeroes = createSelector(
+        state => state.heroes.heroes,
+        state => state.filters.currentFilter,
+        (heroes, filter) => {
+            if (filter == 'all') {
+                return heroes
+            }
+            return heroes.filter(item => item.element === filter)
+        }
+    );
+    const heroes = useSelector(filteredHeroes);
+    const heroesLoadingStatus = useSelector(state => state.heroes.heroesLoadingStatus);
     const dispatch = useDispatch();
     const {request} = useHttp();
-
     useEffect(() => {
         dispatch(heroesFetching());
         request("/api/zamer/heroes")
@@ -50,12 +62,7 @@ const HeroesList = () => {
         if (arr.length === 0) {
             return <h5 className="text-center mt-5">Героев пока нет</h5>
         }
-        if (currentFilter == 'all') {
-            return arr.map(({_id, ...props}) => {
-                return <HeroesListItem key={_id} _id={_id} {...props}/>
-            })
-        }
-        return arr.filter(item => item.element === currentFilter).map(({_id, ...props}) => {
+        return arr.map(({_id, ...props}) => {
             return <HeroesListItem key={_id} _id={_id} {...props}/>
         })
     }

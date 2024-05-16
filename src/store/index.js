@@ -1,6 +1,12 @@
-import { createStore } from 'redux';
-import reducer from '../reducers';
+import { configureStore } from '@reduxjs/toolkit';
+import filters from '../reducers/filtersSlice';
+import heroes from '../reducers/heroesSlice';
 
-const store = createStore(reducer, window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__());
+const store = configureStore({
+    reducer: {
+        filters, heroes
+    },
+    devTools: true
+})
 
 export default store;

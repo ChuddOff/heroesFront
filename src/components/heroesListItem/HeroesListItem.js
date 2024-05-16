@@ -39,10 +39,11 @@ const HeroesListItem = ({name, description, element, uri, _id}) => {
             myRef.current.style.opacity = '0%'
         }
         const {_id} = await request(`/api/zamer/deleteHero/?id=${id}`, 'DELETE');
-        socket.emit("delete", {
-            _id: _id,
-        },)
-        socket.emit("connection")
+        setTimeout(() => {
+            socket.emit("delete", {
+                _id: _id,
+            },)
+        }, 500);
 
     }
 
