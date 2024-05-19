@@ -2,7 +2,7 @@
   height: 100vh;
   overflow-y: scroll;
   background: url("../../assets/hero_bg.jpg") center/cover no-repeat;
-  overflow: hidden;
+  overflow-x: hidden;
 }
 
 .content {
