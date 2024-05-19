@@ -11,7 +11,6 @@ const HeroesListItem = ({name, description, element, uri, _id}) => {
     const handlers = useSwipeable({
         onSwipeStart: (event) => {
             setPosition(event.deltaX);
-            document.body.style.overflow = 'hidden'
         },
         onSwiping: (event) => {
             setPosition(event.deltaX);
@@ -23,7 +22,7 @@ const HeroesListItem = ({name, description, element, uri, _id}) => {
             } else {
                 setPosition(0);
             }
-            document.body.style.overflow = 'hidden'
+            document.body.style.overflowY = 'hidden'
         },
     });
 
@@ -66,6 +65,7 @@ const HeroesListItem = ({name, description, element, uri, _id}) => {
 
     return (
         <li 
+            onClick={() => {document.body.style.overflow = 'hidden'}}
             className='heroAnim'
             style={{
                 position: 'relative'
